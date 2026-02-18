@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sania Modas | Shop Online</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="top-bar">ENTREGA PARA TODO O BRASIL 🚛!</div>
+        <nav class="navbar">
+            <div class="logo" onclick="filtrar('all', null); showPage('homePage')">SANIA<span>MODAS</span></div>
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar tendências...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="nav-actions">
+                <div class="nav-btn" onclick="checkAuth('profilePage')">
+                    <div class="icon-box"><i class="far fa-user"></i></div>
+                    <span>Perfil</span>
+                </div>
+                <div class="nav-btn" onclick="checkAuth('cartPage')">
+                    <div class="icon-box">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span id="cartCount" class="cart-badge">0</span>
+                    </div>
+                    <span>Sacola</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="content-wrapper">
+
+        <section id="homePage" class="page active">
+            <div class="destaque-slider">
+                <div class="slider-container" id="sliderContainer">
+                    </div>
+                <div class="hero-overlay-text">
+                    <h1 class="brand-overlay">SANIA VIBES</h1>
+                </div>
+                <div class="slider-dots" id="sliderDots">
+                    </div>
+            </div>
+
+            <div class="filter-bar">
+                <button class="filter-pill active" onclick="filtrar('all', this)">Tudo</button>
+                <button class="filter-pill" onclick="filtrar('praia', this)">Moda Praia</button>
+                <button class="filter-pill" onclick="filtrar('academia', this)">Academia</button>
+                <button class="filter-pill outlet" onclick="filtrar('outlet', this)">Outlet %</button>
+            </div>
+
+            <div class="product-grid" id="productGrid">
+                </div>
+        </section>
+
+        <section id="productDetailsPage" class="page">
+            <div class="back-navigation" style="padding: 20px 0; margin-bottom: 10px;">
+                <button class="btn-back" onclick="showPage('homePage')" style="
+                    background: #f8f8f8;
+                    border: 1px solid #eee;
+                    padding: 10px 20px;
+                    border-radius: 50px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-weight: 600;
+                    color: #333;
+                    transition: all 0.3s;
+                ">
+                    <i class="fas fa-arrow-left"></i> Voltar para a Vitrine
+                </button>
+            </div>
+
+            <div class="product-premium-container" style="display: flex; flex-direction: column; gap: 20px;">
+                <div class="product-gallery">
+                    <div class="main-image-viewport" style="position: relative; border-radius: 20px; overflow: hidden; background: #eee;">
+                        <div class="carousel-track" id="productCarousel" style="display: flex; transition: transform 0.5s ease;"></div>
+
+                        <div class="carousel-nav-overlay" style="position: absolute; top: 50%; width: 100%; display: flex; justify-content: space-between; padding: 0 10px; transform: translateY(-50%); pointer-events: none;">
+                            <button class="nav-arrow" onclick="moveCarousel(-1)" style="pointer-events: auto; background: rgba(255,255,255,0.9); border:none; border-radius:50%; width:35px; height:35px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); cursor:pointer;"><i class="fas fa-chevron-left"></i></button>
+                            <button class="nav-arrow" onclick="moveCarousel(1)" style="pointer-events: auto; background: rgba(255,255,255,0.9); border:none; border-radius:50%; width:35px; height:35px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); cursor:pointer;"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-info-panel">
+                    <div class="breadcrumb" style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px;">Home / <span id="detCat">Coleção</span></div>
+                    <h1 id="detNome" class="product-title" style="margin: 10px 0; font-size: 24px;">Nome do Produto</h1>
+
+                    <div class="price-container" style="margin: 15px 0;">
+                        <span style="font-size: 28px; font-weight: 800; color: #ff69b4;">R$ <span id="detPreco">0,00</span></span>
+                    </div>
+
+                    <hr style="border: 0; border-top: 1px solid #f0f0f0; margin: 20px 0;">
+
+                    <div class="option-group" style="margin-bottom: 25px;">
+                        <span style="font-weight: 600; display: block; margin-bottom: 10px;">Cor: <span id="selectedColorName" style="color: #888; font-weight: 400;">Selecione</span></span>
+                        <div class="color-options" style="display: flex; gap: 12px;"></div>
+                    </div>
+
+                    <div class="option-group" style="margin-bottom: 25px;">
+                        <span style="font-weight: 600; display: block; margin-bottom: 10px;">Tamanho:</span>
+                        <div class="size-selector-grid" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
+                    </div>
+
+                    <button class="btn-add-to-cart" onclick="adicionarAoCarrinhoComOpcoes()" style="
+                        width: 100%; 
+                        padding: 18px; 
+                        background: #000; 
+                        color: #fff; 
+                        border: none; 
+                        border-radius: 15px; 
+                        font-size: 16px; 
+                        font-weight: 700; 
+                        cursor: pointer;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 10px;
+                        transition: transform 0.2s;
+                    ">
+                        <i class="fas fa-shopping-bag"></i> ADICIONAR À SACOLA
+                    </button>
+
+                    <div class="description-section" style="margin-top: 30px; background: #f9f9f9; padding: 20px; border-radius: 15px;">
+                        <h3 style="font-size: 16px; margin-bottom: 8px;">Detalhes do Produto</h3>
+                        <p id="detDescricao" style="font-size: 14px; color: #555; line-height: 1.6;"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="authPage" class="page">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2>Crie sua Conta</h2>
+                    <p>Acesse ofertas exclusivas!</p>
+                </div>
+                <div class="auth-form-body" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                    <div class="input-field" style="background: #f5f5f5; padding: 12px; border-radius: 10px; display: flex; align-items: center; gap: 10px;">
+                        <i class="far fa-user"></i>
+                        <input type="text" id="authNome" placeholder="Nome Completo" style="border: none; background: transparent; width: 100%; outline: none;">
+                    </div>
+                    <div class="input-field" style="background: #f5f5f5; padding: 12px; border-radius: 10px; display: flex; align-items: center; gap: 10px;">
+                        <i class="far fa-envelope"></i>
+                        <input type="email" id="authEmail" placeholder="E-mail" style="border: none; background: transparent; width: 100%; outline: none;">
+                    </div>
+                    <div class="input-field" style="background: #f5f5f5; padding: 12px; border-radius: 10px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="authSenha" placeholder="Crie uma senha" style="border: none; background: transparent; width: 100%; outline: none;">
+                    </div>
+                    <button class="btn-buy" onclick="executarAuth()" style="height: 50px; background: #000; color: #fff; border: none; border-radius: 10px; cursor: pointer;">CADASTRAR E ENTRAR</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="profilePage" class="page">
+            <div class="auth-card">
+                <h2>Meu Perfil</h2>
+                <div class="auth-form-body" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                    <div class="input-field" style="background: #f5f5f5; padding: 12px; border-radius: 10px; display: flex; align-items: center; gap: 10px;">
+                        <i class="far fa-user"></i>
+                        <input type="text" id="profNome" placeholder="Nome Completo" style="border: none; background: transparent; width: 100%; outline: none;">
+                    </div>
+                    <div class="input-field" style="background: #f5f5f5; padding: 12px; border-radius: 10px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fab fa-whatsapp"></i>
+                        <input type="text" id="profTelefone" placeholder="WhatsApp" style="border: none; background: transparent; width: 100%; outline: none;">
+                    </div>
+                    <div class="input-field" style="background: #f5f5f5; padding: 12px; border-radius: 10px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <input type="text" id="profEndereco" placeholder="Endereço de Entrega" style="border: none; background: transparent; width: 100%; outline: none;">
+                    </div>
+                    <button class="btn-buy" onclick="salvarPerfil()" style="height: 50px; background: var(--rosa); color: #fff; border: none; border-radius: 10px;">SALVAR DADOS</button>
+                    <button onclick="showPage('homePage')" style="background: none; border: none; color: #666; cursor: pointer;">Voltar</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="cartPage" class="page">
+            <div class="cart-container" style="max-width: 600px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0;">Sua Sacola</h2>
+                    <button onclick="limparSacola()" style="color: #ff4d4d; border: none; background: none; cursor: pointer;"><i class="fas fa-trash-alt"></i> Limpar</button>
+                </div>
+
+                <div id="cartList"></div>
+
+                <div class="total-row" style="margin: 25px 0; font-size: 22px; font-weight: 800; border-top: 1px solid #eee; padding-top: 20px; display: flex; justify-content: space-between;">
+                    Total: <span id="totalPrice">R$ 0,00</span>
+                </div>
+
+                <div class="delivery-selection" style="margin-bottom: 20px; background: #fafafa; padding: 15px; border-radius: 15px;">
+                    <h4 style="margin-bottom: 15px;"><i class="fas fa-shipping-fast"></i> Como deseja receber?</h4>
+
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <label style="flex: 1; border: 1px solid #ddd; padding: 12px; border-radius: 10px; text-align: center; cursor: pointer; background: white;">
+                            <input type="radio" name="tipoEnvio" value="entrega" checked onclick="toggleEnvioFields()"> 
+                            <div style="font-size: 13px; font-weight: 600; margin-top: 5px;">Entrega</div>
+                        </label>
+                        <label style="flex: 1; border: 1px solid #ddd; padding: 12px; border-radius: 10px; text-align: center; cursor: pointer; background: white;">
+                            <input type="radio" name="tipoEnvio" value="retirada" onclick="toggleEnvioFields()"> 
+                            <div style="font-size: 13px; font-weight: 600; margin-top: 5px;">Retirar na Loja</div>
+                        </label>
+                    </div>
+
+                    <div id="camposEntrega" style="display: flex; flex-direction: column; gap: 10px;">
+                        <input type="text" id="cartEntregaNome" placeholder="Quem recebe?" style="padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                        <input type="text" id="cartEntregaTelefone" placeholder="WhatsApp" style="padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                        <input type="text" id="cartEntregaEndereco" placeholder="Endereço Completo (Rua, nº, Bairro)" style="padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                    </div>
+
+                    <div id="camposRetirada" style="display: none; flex-direction: column; gap: 10px;">
+                        <p style="font-size: 12px; color: #666; margin-bottom: 5px;">Escolha a unidade mais próxima:</p>
+                        <select id="selectFilial" style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; background: white;">
+                            <option value="Olaria: Rua Doutor Alfredo Barcelos, 750">Olaria - Rua Dr. Alfredo Barcelos, 750</option>
+                            <option value="Penha: Rua José Rucas, 1588">Penha - Rua José Rucas, 1588</option>
+                            <option value="Ramos: Rua Uranos, 1063">Ramos - Rua Uranos, 1063</option>
+                        </select>
+                        <input type="text" id="cartRetiradaNome" placeholder="Nome de quem irá retirar" style="padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                    </div>
+                </div>
+
+                <button class="btn-buy" onclick="irParaPagamento()" style="width: 100%; height: 55px; background: #000; color: #fff; border: none; border-radius: 50px; font-weight: 600;">PROSSEGUIR PARA PAGAMENTO</button>
+                <button onclick="showPage('homePage')" style="width: 100%; margin-top: 15px; border: none; background: none; color: #888; cursor: pointer;">Continuar Comprando</button>
+            </div>
+        </section>
+
+        <section id="paymentPage" class="page">
+            <div class="payment-container" style="max-width: 500px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 20px;">
+                <h2 style="margin-bottom: 20px;">Pagamento</h2>
+
+                <div style="background: var(--rosa-claro); padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
+                    <p style="margin: 0; color: #666;">Total a pagar:</p>
+                    <strong id="payTotal" style="font-size: 28px; color: var(--rosa);">R$ 0,00</strong>
+                </div>
+
+                <div class="payment-methods" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+                    <label style="display: flex; align-items: center; gap: 10px; padding: 15px; border: 1px solid #eee; border-radius: 12px; cursor: pointer;">
+                        <input type="radio" name="payMethod" value="pix" checked onchange="togglePaymentFields()">
+                        <i class="fas fa-pix" style="color: #32BCAD;"></i> Pix
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 10px; padding: 15px; border: 1px solid #eee; border-radius: 12px; cursor: pointer;">
+                        <input type="radio" name="payMethod" value="cartao" onchange="togglePaymentFields()">
+                        <i class="fas fa-credit-card" style="color: var(--rosa);"></i> Cartão de Crédito
+                    </label>
+                </div>
+
+                <div id="pixArea" style="text-align: center; border: 2px dashed #32BCAD; padding: 20px; border-radius: 15px;">
+                    <i class="fas fa-qrcode" style="font-size: 60px; color: #333;"></i>
+                    <p style="font-size: 12px; margin-top: 10px;">Chave: pagamentos@saniamodas.com.br</p>
+                </div>
+
+                <div id="cardForm" style="display: none; flex-direction: column; gap: 10px;">
+                    <input type="text" id="cardName" placeholder="Nome no Cartão" style="padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                    <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" style="padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="cardExpiry" placeholder="MM/AA" style="flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                        <input type="text" id="cardCVV" placeholder="CVV" style="flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                    </div>
+                </div>
+
+                <button id="btnFinalizar" class="btn-buy" onclick="confirmarPagamentoFinal()" style="width: 100%; height: 55px; background: var(--rosa); color: #fff; border: none; border-radius: 50px; margin-top: 25px; font-weight: 600;">FINALIZAR PEDIDO</button>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
